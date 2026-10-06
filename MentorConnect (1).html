@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="vi" data-t="indigo"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>MentorConnect</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer data-auto-replace-svg="nest" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<style>
+:root{--p:#4f46e5;--p2:#7c3aed;--bg:#f1f5f9;--card:#fff;--tx:#0f172a;--mut:#64748b;--bd:#e2e8f0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[data-t=emerald]{--p:#059669;--p2:#0d9488}[data-t=purple]{--p:#9333ea;--p2:#c026d3}[data-t=amber]{--p:#d97706;--p2:#ea580c}[data-t=rose]{--p:#e11d48;--p2:#db2777}
+[data-t=dark]{--p:#818cf8;--p2:#a78bfa;--bg:#0b1020;--card:#151b2e;--tx:#e5e7eb;--mut:#94a3b8;--bd:#263049}
+html,body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;transition:background .3s}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:1rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.btn{background:var(--p);color:#fff;border-radius:.75rem;padding:.5rem .9rem;font-weight:600;font-size:.85rem}.btn:hover{filter:brightness(1.1)}
+.btn2{border:1px solid var(--bd);border-radius:.75rem;padding:.5rem .9rem;font-size:.85rem;color:var(--tx)}
+.bdg{background:color-mix(in srgb,var(--p) 15%,transparent);color:var(--p);border-radius:99px;padding:2px 10px;font-size:.72rem;font-weight:600;white-space:nowrap}
+.inp{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:.75rem;padding:.55rem .8rem;color:var(--tx);font-size:.9rem}
+.grad{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff}
+.mut{color:var(--mut)}.act{background:color-mix(in srgb,var(--p) 14%,transparent);color:var(--p);font-weight:600}
+button{cursor:pointer}.sc{overflow-x:auto}
+</style></head><body><div id="root"></div>
+<script>
+const {useState,useEffect,useRef}=React,html=htm.bind(React.createElement);
+const I=(c,x='')=>html`<i className=${'fa-solid '+c+' '+x}></i>`;
+const ME='Nguyễn An Khang',MR='Nguyễn Minh Quân';
+const THEMES=[['indigo','Xanh Công Nghệ','#4f46e5'],['emerald','Xanh Sinh Thái','#059669'],['purple','Tím Sáng Tạo','#9333ea'],['amber','Cam Năng Động','#d97706'],['rose','Hồng Hiện Đại','#e11d48'],['dark','Midnight Dark Mode','#0b1020']];
+const NAV=[['dash','fa-chart-pie','Tổng quan'],['dir','fa-address-book','Danh bạ'],['kan','fa-table-columns','Công việc'],['sch','fa-calendar-check','Lịch hẹn'],['chat','fa-comments','Trò chuyện'],['hub','fa-building','Doanh nghiệp']];
+const M=[
+{n:'Nguyễn Minh Quân',co:'FPT',f:'IT',r:'Senior Solutions Architect',rt:4.9,s:['Backend','Cloud','System Design']},
+{n:'Trần Thu Hà',co:'VinGroup',f:'Finance',r:'Giám đốc Phân tích Tài chính',rt:4.8,s:['Phân tích BCTC','Valuation','Excel']},
+{n:'Lê Hoàng Nam',co:'Viettel',f:'IT',r:'Trưởng nhóm An ninh mạng',rt:4.7,s:['Cyber Security','Pentest','SOC']},
+{n:'Phạm Ngọc Anh',co:'Shopee',f:'Marketing',r:'Marketing Manager',rt:4.8,s:['Performance Ads','Branding','CRM']},
+{n:'Võ Đức Thịnh',co:'Google',f:'IT',r:'Software Engineer',rt:4.9,s:['Algorithms','Android','Phỏng vấn kỹ thuật']},
+{n:'Đặng Khánh Linh',co:'Grab',f:'Data',r:'Data Science Lead',rt:4.8,s:['Machine Learning','SQL','A/B Testing']},
+{n:'Bùi Thanh Tùng',co:'VinGroup',f:'Marketing',r:'Giám đốc Thương hiệu',rt:4.6,s:['Brand Strategy','Truyền thông','Storytelling']},
+{n:'Hoàng Mai Chi',co:'FPT',f:'Finance',r:'Chuyên gia Kế hoạch Tài chính',rt:4.5,s:['FP&A','Ngân sách','Quản trị rủi ro']}];
+const MENTEES=[ME,'Lê Bảo Châu','Trần Gia Huy','Phạm Thùy Dương'];
+const T0=[
+{id:1,t:'Hoàn thiện CV theo chuẩn ATS',own:ME,col:'done',due:'28/09',score:9,fb:'CV gọn, số liệu rõ ràng. Thêm link GitHub ở đầu trang nhé.',sub:'Đã cập nhật CV 1 trang, đính kèm link Drive.'},
+{id:2,t:'Xây REST API quản lý thư viện (Node.js)',own:ME,col:'review',due:'06/10',sub:'Repo: github.com/ankhang/library-api — đã có CRUD, JWT và README.'},
+{id:3,t:'Đọc "Clean Code" chương 1–4 và tóm tắt',own:ME,col:'prog',due:'10/10'},
+{id:4,t:'Luyện 10 bài LeetCode mức Easy',own:ME,col:'todo',due:'14/10'},
+{id:5,t:'Luyện nói tiếng Anh: tự giới thiệu 2 phút',own:ME,col:'todo',due:'16/10'},
+{id:6,t:'Lập kế hoạch nội dung TikTok cho CLB',own:'Lê Bảo Châu',col:'review',due:'05/10',sub:'Lịch đăng 4 tuần, 12 ý tưởng video, KPI lượt xem.'},
+{id:7,t:'Phân tích báo cáo tài chính quý 2 của VNM',own:'Trần Gia Huy',col:'prog',due:'12/10'},
+{id:8,t:'Dựng dashboard SQL doanh số bán lẻ',own:'Phạm Thùy Dương',col:'done',due:'30/09',score:8,fb:'Truy vấn tốt, cần tối ưu thêm index.',sub:'Dashboard 5 biểu đồ.'}];
+const CH0=[
+{id:'a',n:'Nguyễn Minh Quân',k:'Mentor',s:'FPT · Solutions Architect',u:2,m:[[0,'Chào An Khang, tuần này em tiến độ API đến đâu rồi?'],[1,'Dạ em xong phần JWT rồi ạ, đang viết test.'],[0,'Tốt. Nhớ nộp bài trước thứ Ba để anh review nhé.']]},
+{id:'b',n:'Phạm Ngọc Anh',k:'Mentor',s:'Shopee · Marketing Manager',u:0,m:[[0,'Cảm ơn em đã gửi yêu cầu kết nối. Mình hẹn cà phê thứ Bảy nhé!']]},
+{id:'c',n:'Võ Đức Thịnh',k:'Mentor',s:'Google · Software Engineer',u:1,m:[[0,'Em chuẩn bị phần system design cho buổi mock interview chưa?']]},
+{id:'d',n:'Lê Bảo Châu',k:'Mentee',s:'ĐH Kinh tế · Năm 3',u:3,m:[[0,'Anh ơi, em đã nộp kế hoạch TikTok rồi ạ!']]},
+{id:'e',n:'Trần Gia Huy',k:'Mentee',s:'ĐH Ngoại thương · Năm 4',u:0,m:[[0,'Em xin phép dời lịch họp sang thứ Năm được không ạ?']]}];
+const REPLY={Mentor:['Anh/chị đã nhận được rồi, để mình xem và phản hồi sớm nhé.','Ý tưởng hay đấy! Em thử làm thêm một bản nháp rồi mình trao đổi.','Cứ mạnh dạn thử, sai thì sửa — quan trọng là em học được gì.'],Mentee:['Dạ em cảm ơn anh/chị, em sẽ làm ngay ạ!','Em hiểu rồi ạ, em sẽ cập nhật tiến độ trước cuối tuần.','Dạ em xin phép hỏi thêm một chút ạ.']};
+const AP0=[{id:1,mr:MR,me:ME,ty:'on',d:'2026-10-08',t:'19:30',loc:'https://meet.google.com/mnt-conn-ect',note:'Review API thư viện và lộ trình Backend'},{id:2,mr:'Phạm Ngọc Anh',me:ME,ty:'off',d:'2026-10-10',t:'09:00',loc:'Highlands Coffee, Nguyễn Huệ, Q.1',note:'Định hướng nghề Marketing'}];
+const REQ0=[{n:'Hoàng Gia Bảo',s:'ĐH Bách Khoa · Năm 2',g:'Muốn học lập trình Backend từ đầu'},{n:'Ngô Phương Thảo',s:'ĐH FPT · Năm 3',g:'Cần góp ý CV để xin thực tập'}];
+const CHAL=[['FPT Software','Xây chatbot CSKH bằng LLM','AI','30 ngày','5.000.000đ + thư giới thiệu'],['Viettel','Phát hiện bất thường trong log hệ thống mạng','Bảo mật','21 ngày','Cơ hội thực tập tại Viettel Cyber'],['Shopee','Tối ưu chiến dịch 9.9 ngành hàng Làm đẹp','Marketing','14 ngày','3.000.000đ + voucher'],['Grab','Dự báo nhu cầu đặt xe giờ cao điểm','Data','30 ngày','Mentor 1:1 cùng Data Lead'],['VinGroup','Phân tích tài chính hệ sinh thái VinFast','Finance','21 ngày','Phỏng vấn trực tiếp'],['Google','Thiết kế tính năng học tập cho Gen Z','Product','28 ngày','Buổi chia sẻ cùng kỹ sư Google']];
+const SCH=[['Học bổng FPT Future Mentor','10.000.000đ/kỳ + 6 tháng kèm 1:1 cùng Senior','5 suất · Hạn 31/10'],['Viettel Digital Talent','Tài trợ học phí + chương trình đào tạo chuyên sâu','10 suất · Hạn 15/11'],['VinGroup Scholar Circle','Học bổng 1:1 cho sinh viên nữ ngành STEM','8 suất · Hạn 20/11']];
+const FT=[['Shopee','Marketing Intern Fast-Track','Bỏ qua vòng CV'],['Grab','Data Analyst Intern','Phỏng vấn trực tiếp'],['Google','STEP Intern (sinh viên năm 2)','Ưu tiên hồ sơ có mentor tiến cử']];
+
+const Av=({n,s=44})=>html`<div className="grad rounded-full flex items-center justify-center font-bold shrink-0" style=${{width:s,height:s,fontSize:s/2.4}}>${n.split(' ').slice(-1)[0][0]}</div>`;
+const Modal=({t,x,children})=>html`<div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-3" style=${{background:'#0008'}} onClick=${x}><div className="card w-full max-w-md p-5" onClick=${e=>e.stopPropagation()}><div className="flex justify-between mb-3"><b>${t}</b><button onClick=${x}>${I('fa-xmark')}</button></div>${children}</div></div>`;
+
+function Cht({type,labels,sets,th}){
+ const r=useRef();
+ useEffect(()=>{
+  const cs=getComputedStyle(document.documentElement),g=k=>cs.getPropertyValue(k).trim(),cols=[g('--p'),g('--p2')],m=g('--mut'),bd=g('--bd');
+  const rad=type==='radar',sc=rad?{r:{min:0,max:100,ticks:{display:false},grid:{color:bd},angleLines:{color:bd},pointLabels:{color:m,font:{size:11}}}}:{y:{min:0,max:100,ticks:{color:m},grid:{color:bd}},x:{ticks:{color:m},grid:{display:false}}};
+  const c=new Chart(r.current,{type,data:{labels,datasets:sets.map((s,i)=>({label:s[0],data:s[1],borderColor:cols[i],backgroundColor:cols[i]+(rad?'33':'cc'),borderWidth:2,borderRadius:6,pointBackgroundColor:cols[i]}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:m}}},scales:sc}});
+  return()=>c.destroy();
+ },[type,th,JSON.stringify(sets)]);
+ return html`<div style=${{height:290,position:'relative'}}><canvas ref=${r}></canvas></div>`;
+}
+
+function Dash({role,tasks,aps,th,go}){
+ const [ty,sty]=useState('radar');
+ const mine=tasks.filter(t=>role==='mentor'||t.own===ME),done=mine.filter(t=>t.col==='done'),sc=done.filter(t=>t.score),avg=sc.length?(sc.reduce((a,t)=>a+t.score,0)/sc.length).toFixed(1):'—',rv=tasks.filter(t=>t.col==='review');
+ const St=role==='mentee'?[['fa-circle-check','Task hoàn thành',done.length+'/'+mine.length],['fa-handshake','Buổi gặp',aps.length+' sắp tới · 8 đã qua'],['fa-star','Điểm đánh giá',avg+'/10']]:[['fa-user-graduate','Mentee đang kèm','12'],['fa-eye','Task chờ duyệt',rv.length],['fa-star','Điểm TB đã chấm',avg+'/10']];
+ const sk=['Kỹ năng mềm','Chuyên môn','Kỷ luật','Tiếng Anh','Tư duy phản biện','Làm việc nhóm'];
+ return html`<div className="space-y-4">
+ <div className="grad rounded-2xl p-5"><div className="text-xl font-bold">Xin chào, ${role==='mentee'?ME:MR} 👋</div><div className="opacity-90 text-sm mt-1">${role==='mentee'?'Hôm nay bạn có 1 task đang chờ mentor duyệt và 1 buổi hẹn trong tuần này.':`Có ${rv.length} bài nộp đang chờ bạn chấm điểm và phản hồi.`}</div></div>
+ <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">${St.map(s=>html`<div className="card p-4 flex items-center gap-3" key=${s[1]}><div className="grad w-11 h-11 rounded-xl flex items-center justify-center">${I(s[0])}</div><div><div className="text-xs mut">${s[1]}</div><div className="font-bold">${s[2]}</div></div></div>`)}</div>
+ <div className="card p-4"><div className="flex justify-between items-center mb-2"><b>${role==='mentee'?'Phát triển kỹ năng':'Tiến độ các mentee (%)'}</b>${role==='mentee'&&html`<div className="flex gap-1">${['radar','bar'].map(t=>html`<button key=${t} className=${'btn2 '+(ty===t?'act':'')} onClick=${()=>sty(t)}>${t==='radar'?'Radar':'Cột'}</button>`)}</div>`}</div>
+ ${role==='mentee'?html`<${Cht} th=${th} type=${ty} labels=${sk} sets=${[['Hiện tại',[72,65,80,58,70,76]],['Mục tiêu học kỳ',[85,85,90,80,85,85]]]}/>`:html`<${Cht} th=${th} type="bar" labels=${MENTEES} sets=${[['Hoàn thành task',[78,64,52,90]],['Chuyên cần',[85,70,60,95]]]}/>`}</div>
+ ${role==='mentor'&&rv.length>0&&html`<div className="card p-4"><b>Cần duyệt ngay</b>${rv.map(t=>html`<div key=${t.id} className="flex justify-between items-center border-t mt-2 pt-2" style=${{borderColor:'var(--bd)'}}><div className="text-sm"><b>${t.t}</b><div className="mut text-xs">${t.own}</div></div><button className="btn" onClick=${()=>go('kan')}>Chấm điểm</button></div>`)}</div>`}</div>`;
+}
+
+function Dir({role,req,setReq,go,toast,reqs,setReqs}){
+ const [q,sq]=useState(''),[f,sf]=useState(''),[c,sc]=useState('');
+ if(role==='mentor')return html`<div className="space-y-3"><h2 className="font-bold text-lg">Yêu cầu kết nối từ sinh viên</h2>${reqs.length?reqs.map(r=>html`<div key=${r.n} className="card p-4 flex items-center gap-3 flex-wrap"><${Av} n=${r.n}/><div className="flex-1 min-w-[160px]"><b>${r.n}</b><div className="text-xs mut">${r.s}</div><div className="text-sm mt-1">“${r.g}”</div></div><button className="btn" onClick=${()=>{setReqs(reqs.filter(x=>x!==r));toast('Đã chấp nhận '+r.n)}}>Chấp nhận</button><button className="btn2" onClick=${()=>setReqs(reqs.filter(x=>x!==r))}>Từ chối</button></div>`):html`<div className="card p-6 text-center mut">Chưa có yêu cầu mới. Bạn đã xử lý hết rồi!</div>`}</div>`;
+ const L=M.filter(m=>(m.n+m.r+m.s.join()).toLowerCase().includes(q.toLowerCase())&&(!f||m.f===f)&&(!c||m.co===c));
+ const opt=a=>a.map(x=>html`<option key=${x}>${x}</option>`);
+ return html`<div className="space-y-3"><div className="grid grid-cols-1 sm:grid-cols-3 gap-2"><input className="inp" placeholder="🔍 Tìm theo tên, kỹ năng..." value=${q} onChange=${e=>sq(e.target.value)}/><select className="inp" value=${f} onChange=${e=>sf(e.target.value)}><option value="">Mọi lĩnh vực</option>${opt([...new Set(M.map(m=>m.f))])}</select><select className="inp" value=${c} onChange=${e=>sc(e.target.value)}><option value="">Mọi doanh nghiệp</option>${opt([...new Set(M.map(m=>m.co))])}</select></div>
+ <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">${L.map(m=>html`<div key=${m.n} className="card p-4"><div className="flex gap-3"><${Av} n=${m.n} s=${52}/><div className="flex-1"><b>${m.n}</b><div className="text-sm mut">${m.r}</div><div className="mt-1 flex gap-1 flex-wrap"><span className="bdg">${m.co}</span><span className="bdg">${m.f}</span><span className="text-xs mut">${I('fa-star','text-amber-400')} ${m.rt}</span></div></div></div><div className="text-xs mut mt-2">${m.s.join(' • ')}</div><div className="flex gap-2 mt-3"><button className=${req.includes(m.n)?'btn2 flex-1':'btn flex-1'} onClick=${()=>{if(!req.includes(m.n)){setReq([...req,m.n]);toast('Đã gửi yêu cầu tới '+m.n)}}}>${req.includes(m.n)?'Đã gửi yêu cầu':'Nộp yêu cầu kết nối'}</button><button className="btn2" onClick=${()=>go('sch',m.n)}>${I('fa-calendar-plus')} Đặt lịch hẹn</button></div></div>`)}</div>${!L.length&&html`<div className="card p-6 text-center mut">Không tìm thấy mentor phù hợp. Thử bỏ bớt bộ lọc.</div>`}</div>`;
+}
+
+function Kan({role,tasks,setTasks,toast}){
+ const [m,sm]=useState(null),[a,sa]=useState(''),[b,sb]=useState(8),[o,so]=useState(MENTEES[0]);
+ const list=tasks.filter(t=>role==='mentor'||t.own===ME);
+ const COLS=[['todo','Cần làm','fa-list'],['prog','Đang làm','fa-spinner'],['review','Chờ duyệt','fa-eye'],['done','Hoàn thành','fa-circle-check']];
+ const set=(id,x)=>setTasks(ts=>ts.map(t=>t.id===id?{...t,...x}:t));
+ const open=(k,t)=>{sm({k,t});sa('');sb(8)};
+ const ok=()=>{const t=m.t;
+  if(m.k==='sub'){set(t.id,{col:'review',sub:a||'(Không có ghi chú)'});toast('Đã nộp bài, chờ mentor duyệt')}
+  if(m.k==='gr'){set(t.id,{col:'done',score:+b,fb:a||'Làm tốt lắm!'});toast('Đã chấm điểm')}
+  if(m.k==='new'&&a){setTasks(ts=>[...ts,{id:Date.now(),t:a,own:o,col:'todo',due:'20/10'}]);toast('Đã giao task mới')}
+  sm(null)};
+ return html`<div>${role==='mentor'&&html`<button className="btn mb-3" onClick=${()=>open('new')}>${I('fa-plus')} Giao task mới</button>`}
+ <div className="sc"><div className="grid grid-cols-4 gap-3" style=${{minWidth:880}}>${COLS.map(([k,n,ic])=>html`<div key=${k} className="rounded-2xl p-2" style=${{background:'color-mix(in srgb,var(--p) 6%,transparent)'}}><div className="font-semibold text-sm p-2">${I(ic,'mr-1')} ${n} <span className="bdg ml-1">${list.filter(t=>t.col===k).length}</span></div><div className="space-y-2">${list.filter(t=>t.col===k).map(t=>html`<div key=${t.id} className="card p-3 text-sm"><b>${t.t}</b><div className="text-xs mut mt-1">${role==='mentor'?t.own+' · ':''}Hạn ${t.due}</div>
+  ${t.sub&&html`<div className="text-xs mt-2 p-2 rounded-lg" style=${{background:'var(--bg)'}}>${I('fa-paperclip')} ${t.sub}</div>`}
+  ${t.col==='done'&&html`<div className="text-xs mt-2"><span className="bdg">${t.score}/10</span> ${t.fb}</div>`}
+  ${role==='mentee'&&t.col==='todo'&&html`<button className="btn mt-2 w-full" onClick=${()=>{set(t.id,{col:'prog'});toast('Bắt đầu làm task')}}>Bắt đầu</button>`}
+  ${role==='mentee'&&t.col==='prog'&&html`<button className="btn mt-2 w-full" onClick=${()=>open('sub',t)}>${I('fa-upload')} Nộp bài</button>`}
+  ${role==='mentor'&&t.col==='review'&&html`<button className="btn mt-2 w-full" onClick=${()=>open('gr',t)}>Chấm điểm & Feedback</button>`}</div>`)}</div></div>`)}</div></div>
+ ${m&&html`<${Modal} t=${m.k==='sub'?'Nộp bài: '+m.t.t:m.k==='gr'?'Chấm bài: '+m.t.t:'Giao task mới'} x=${()=>sm(null)}><div className="space-y-3">
+  ${m.k==='new'&&html`<select className="inp" value=${o} onChange=${e=>so(e.target.value)}>${MENTEES.map(x=>html`<option key=${x}>${x}</option>`)}</select>`}
+  ${m.k==='gr'&&html`<div className="text-sm p-2 rounded-lg" style=${{background:'var(--bg)'}}>${m.t.sub}</div><label className="text-sm">Điểm: <b>${b}</b>/10<input type="range" min="1" max="10" value=${b} onChange=${e=>sb(e.target.value)} className="w-full"/></label>`}
+  <textarea className="inp" rows="4" placeholder=${m.k==='sub'?'Mô tả kết quả hoặc dán link bài làm...':m.k==='gr'?'Nhận xét cho mentee...':'Tên công việc'} value=${a} onChange=${e=>sa(e.target.value)}></textarea>
+  <button className="btn w-full" onClick=${ok}>${m.k==='sub'?'Nộp bài':m.k==='gr'?'Lưu chấm điểm':'Giao task'}</button></div><//>`}</div>`;
+}
+
+function Sch({role,aps,setAps,pre,toast}){
+ const names=role==='mentee'?M.map(x=>x.n):MENTEES.slice(1);
+ const [f,sf]=useState({who:pre||names[0],ty:'on',d:'2026-10-12',t:'19:00',loc:'',note:''});
+ useEffect(()=>sf(x=>({...x,who:pre||names[0]})),[role,pre]);
+ const u=k=>e=>sf({...f,[k]:e.target.value});
+ const add=()=>{if(!f.loc||!f.note)return toast('Vui lòng nhập địa điểm/link và nội dung');
+  setAps([...aps,{id:Date.now(),mr:role==='mentee'?f.who:MR,me:role==='mentee'?ME:f.who,ty:f.ty,d:f.d,t:f.t,loc:f.loc,note:f.note}].sort((a,b)=>(a.d+a.t).localeCompare(b.d+b.t)));sf({...f,loc:'',note:''});toast('Đã đặt lịch hẹn')};
+ return html`<div className="grid lg:grid-cols-5 gap-4"><div className="card p-4 lg:col-span-2 space-y-3 self-start"><b>Đặt lịch hẹn mới</b>
+ <select className="inp" value=${f.who} onChange=${u('who')}>${names.map(x=>html`<option key=${x}>${x}</option>`)}</select>
+ <div className="grid grid-cols-2 gap-2">${[['on','fa-video','Online (Google Meet)'],['off','fa-mug-hot','Trực tiếp']].map(([k,ic,n])=>html`<button key=${k} className=${'btn2 '+(f.ty===k?'act':'')} onClick=${()=>sf({...f,ty:k,loc:''})}>${I(ic)} ${n}</button>`)}</div>
+ <div className="grid grid-cols-2 gap-2"><input type="date" className="inp" value=${f.d} onChange=${u('d')}/><input type="time" className="inp" value=${f.t} onChange=${u('t')}/></div>
+ <input className="inp" placeholder=${f.ty==='on'?'Link Google Meet':'Quán cà phê / văn phòng'} value=${f.loc} onChange=${u('loc')}/>
+ <textarea className="inp" rows="3" placeholder="Nội dung trao đổi" value=${f.note} onChange=${u('note')}></textarea><button className="btn w-full" onClick=${add}>Đặt lịch</button></div>
+ <div className="lg:col-span-3 space-y-3"><b>Cuộc hẹn sắp tới</b>${aps.length?aps.map(a=>html`<div key=${a.id} className="card p-4 flex gap-3 items-start"><div className="grad rounded-xl p-2 text-center w-14 shrink-0"><div className="text-lg font-bold leading-none">${a.d.slice(8)}</div><div className="text-xs">Th${+a.d.slice(5,7)}</div></div><div className="flex-1 text-sm"><b>${role==='mentee'?a.mr:a.me}</b> <span className="bdg ml-1">${a.ty==='on'?'Online':'Trực tiếp'}</span><div className="mut">${I('fa-clock')} ${a.t} · ${I(a.ty==='on'?'fa-video':'fa-location-dot')} ${a.loc}</div><div className="mt-1">${a.note}</div></div><button className="mut" title="Hủy lịch" onClick=${()=>setAps(aps.filter(x=>x!==a))}>${I('fa-trash')}</button></div>`):html`<div className="card p-6 text-center mut">Chưa có cuộc hẹn nào. Hãy đặt lịch đầu tiên ở bên trái.</div>`}</div></div>`;
+}
+
+function Chat({chats,setChats}){
+ const [id,sid]=useState('a'),[q,sq]=useState(''),[k,sk]=useState(''),[tx,stx]=useState(''),[op,sop]=useState(false),act=useRef('a'),end=useRef();
+ const cur=chats.find(c=>c.id===id);
+ useEffect(()=>{act.current=id;end.current&&end.current.scrollIntoView()},[id,cur.m.length]);
+ const pick=i=>{sid(i);sop(true);setChats(cs=>cs.map(c=>c.id===i?{...c,u:0}:c))};
+ const send=()=>{if(!tx.trim())return;const t=tx,i=id,kd=cur.k;stx('');
+  setChats(cs=>cs.map(c=>c.id===i?{...c,m:[...c.m,[1,t]]}:c));
+  setTimeout(()=>{const r=REPLY[kd][Math.floor(Math.random()*3)];setChats(cs=>cs.map(c=>c.id===i?{...c,m:[...c.m,[0,r]],u:act.current===i?0:c.u+1}:c))},1300)};
+ const L=chats.filter(c=>c.n.toLowerCase().includes(q.toLowerCase())&&(!k||c.k===k));
+ return html`<div className="card flex overflow-hidden" style=${{height:'calc(100vh - 190px)',minHeight:460}}>
+ <div className=${'w-full md:w-80 border-r flex-col '+(op?'hidden md:flex':'flex')} style=${{borderColor:'var(--bd)'}}><div className="p-3 space-y-2"><input className="inp" placeholder="🔍 Tìm cuộc trò chuyện" value=${q} onChange=${e=>sq(e.target.value)}/><div className="flex gap-1">${['','Mentor','Mentee'].map(x=>html`<button key=${x} className=${'btn2 flex-1 '+(k===x?'act':'')} onClick=${()=>sk(x)}>${x||'Tất cả'}</button>`)}</div></div>
+ <div className="overflow-y-auto flex-1">${L.map(c=>html`<button key=${c.id} onClick=${()=>pick(c.id)} className=${'w-full flex gap-3 p-3 text-left items-center '+(c.id===id?'act':'')}><${Av} n=${c.n}/><div className="flex-1 min-w-0"><div className="flex justify-between"><b className="text-sm truncate">${c.n}</b>${c.u>0&&html`<span className="grad rounded-full text-xs px-2">${c.u}</span>`}</div><div className="text-xs mut truncate">${c.m[c.m.length-1][1]}</div></div></button>`)}</div></div>
+ <div className=${'flex-1 flex-col min-w-0 '+(op?'flex':'hidden md:flex')}><div className="p-3 border-b flex items-center gap-3" style=${{borderColor:'var(--bd)'}}><button className="md:hidden" onClick=${()=>sop(false)}>${I('fa-arrow-left')}</button><${Av} n=${cur.n} s=${38}/><div><b className="text-sm">${cur.n}</b> <span className="bdg">${cur.k}</span><div className="text-xs mut">${cur.s}</div></div></div>
+ <div className="flex-1 overflow-y-auto p-3 space-y-2">${cur.m.map((m,i)=>html`<div key=${i} className=${'flex '+(m[0]?'justify-end':'')}><div className=${'max-w-[80%] px-3 py-2 rounded-2xl text-sm '+(m[0]?'grad':'')} style=${m[0]?{}:{background:'var(--bg)'}}>${m[1]}</div></div>`)}<div ref=${end}></div></div>
+ <div className="p-3 flex gap-2 border-t" style=${{borderColor:'var(--bd)'}}><input className="inp" placeholder="Nhập tin nhắn..." value=${tx} onChange=${e=>stx(e.target.value)} onKeyDown=${e=>e.key==='Enter'&&send()}/><button className="btn" onClick=${send}>${I('fa-paper-plane')}</button></div></div></div>`;
+}
+
+function Hub({toast,role}){
+ const [ap,sap]=useState([]);
+ const B=k=>html`<button className=${ap.includes(k)?'btn2':'btn'} onClick=${()=>{if(!ap.includes(k)){sap([...ap,k]);toast('Đã gửi đăng ký')}}}>${ap.includes(k)?'Đã đăng ký':role==='mentor'?'Tiến cử mentee':'Ứng tuyển'}</button>`;
+ const Sec=(t,ic)=>html`<h2 className="font-bold text-lg mt-2">${I(ic,'mr-2')}${t}</h2>`;
+ return html`<div className="space-y-3">${Sec('Thử thách thực tế từ doanh nghiệp','fa-flag-checkered')}
+ <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3">${CHAL.map(c=>html`<div key=${c[1]} className="card p-4 flex flex-col"><div className="flex justify-between"><span className="bdg">${c[0]}</span><span className="text-xs mut">${c[3]}</span></div><b className="mt-2 flex-1">${c[1]}</b><div className="text-xs mut my-2">${I('fa-gift')} ${c[4]} · ${c[2]}</div>${B(c[1])}</div>`)}</div>
+ ${Sec('Học bổng Mentorship tài trợ 1:1','fa-graduation-cap')}<div className="grid md:grid-cols-3 gap-3">${SCH.map(c=>html`<div key=${c[0]} className="card p-4 flex flex-col"><b>${c[0]}</b><div className="text-sm mut mt-1 flex-1">${c[1]}</div><div className="text-xs my-2"><span className="bdg">${c[2]}</span></div>${B(c[0])}</div>`)}</div>
+ ${Sec('Tuyển dụng Fast-Track','fa-bolt')}<div className="grid md:grid-cols-3 gap-3">${FT.map(c=>html`<div key=${c[1]} className="card p-4 flex flex-col"><span className="bdg self-start">${c[0]}</span><b className="mt-2 flex-1">${c[1]}</b><div className="text-xs mut my-2">${I('fa-forward-fast')} ${c[2]}</div>${B(c[1])}</div>`)}</div></div>`;
+}
+
+function App(){
+ const [role,sr]=useState('mentee'),[th,sth]=useState('indigo'),[pg,spg]=useState('dash'),[pre,spre]=useState(''),[tp,stp]=useState(false),[ts,setTs]=useState(T0),[chats,setChats]=useState(CH0),[aps,setAps]=useState(AP0),[req,setReq]=useState([]),[reqs,setReqs]=useState(REQ0),[tt,stt]=useState('');
+ document.documentElement.setAttribute('data-t',th);
+ const toast=m=>{stt(m);setTimeout(()=>stt(''),2200)};
+ const go=(p,w)=>{spre(w||'');spg(p)};
+ const un=chats.reduce((a,c)=>a+c.u,0);
+ const P={dash:html`<${Dash} role=${role} tasks=${ts} aps=${aps} th=${th} go=${go}/>`,dir:html`<${Dir} role=${role} req=${req} setReq=${setReq} go=${go} toast=${toast} reqs=${reqs} setReqs=${setReqs}/>`,kan:html`<${Kan} role=${role} tasks=${ts} setTasks=${setTs} toast=${toast}/>`,sch:html`<${Sch} role=${role} aps=${aps} setAps=${setAps} pre=${pre} toast=${toast}/>`,chat:html`<${Chat} chats=${chats} setChats=${setChats}/>`,hub:html`<${Hub} toast=${toast} role=${role}/>`};
+ return html`<div>
+ <header className="grad sticky top-0 z-40 shadow-md" style=${{paddingTop:'env(safe-area-inset-top,0px)'}}><div className="flex items-center justify-between gap-2 px-3 py-3 max-w-7xl mx-auto">
+  <div className="flex items-center gap-2 font-bold text-lg">${I('fa-handshake-angle')}<span className="hidden sm:inline">MentorConnect</span></div>
+  <div className="flex rounded-xl p-1" style=${{background:'#0003'}}>${[['mentee','🎓 Mentee'],['mentor','👨‍🏫 Mentor']].map(([k,n])=>html`<button key=${k} onClick=${()=>sr(k)} className="px-3 py-1 rounded-lg text-sm font-semibold" style=${role===k?{background:'#fff',color:'var(--p)'}:{}}>${n}</button>`)}</div>
+  <div className="relative"><button className="w-10 h-10 rounded-xl" style=${{background:'#0003'}} onClick=${()=>stp(!tp)} title="Đổi màu giao diện">${I('fa-palette')}</button>
+  ${tp&&html`<div className="card absolute right-0 mt-2 p-2 w-56" style=${{color:'var(--tx)'}}>${THEMES.map(([k,n,c])=>html`<button key=${k} onClick=${()=>{sth(k);stp(false)}} className=${'w-full flex items-center gap-2 p-2 rounded-lg text-sm text-left '+(th===k?'act':'')}><span className="w-5 h-5 rounded-full border" style=${{background:c,borderColor:'var(--bd)'}}></span>${n}</button>`)}</div>`}</div></div></header>
+ <div className="flex max-w-7xl mx-auto">
+  <nav className="hidden md:flex flex-col gap-1 w-56 p-3 sticky self-start" style=${{top:70}}>${NAV.map(([k,ic,n])=>html`<button key=${k} onClick=${()=>go(k)} className=${'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-left '+(pg===k?'act':'mut')}>${I(ic,'w-5')} ${n}${k==='chat'&&un>0&&html`<span className="grad rounded-full text-xs px-2 ml-auto">${un}</span>`}</button>`)}</nav>
+  <main className="flex-1 min-w-0 p-3 md:p-4 pb-24 md:pb-6"><h1 className="font-bold text-xl mb-3">${NAV.find(n=>n[0]===pg)[2]}</h1>${P[pg]}</main></div>
+ <nav className="md:hidden fixed bottom-0 inset-x-0 card grid grid-cols-6 z-40" style=${{borderRadius:0,paddingBottom:'env(safe-area-inset-bottom,0px)'}}>${NAV.map(([k,ic,n])=>html`<button key=${k} onClick=${()=>go(k)} className=${'py-2 text-[10px] relative '+(pg===k?'act':'mut')}>${I(ic,'block text-base mb-0.5')}${n}${k==='chat'&&un>0&&html`<span className="absolute top-1 right-3 w-2 h-2 rounded-full grad"></span>`}</button>`)}</nav>
+ ${tt&&html`<div className="fixed left-1/2 -translate-x-1/2 bottom-24 md:bottom-6 z-50 grad px-4 py-2 rounded-xl shadow-lg text-sm">${tt}</div>`}</div>`;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(html`<${App}/>`);
+</script></body></html>
